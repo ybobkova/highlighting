@@ -41,10 +41,10 @@ var MyNewHighlightRules = function() {
 //                token: "support.function", // Variablen mit < oder > oder ==
 //                regex: "(?<=[a-z,A-Z,äöü,ÄÖÜ]+\\s*(\\<|\\>|\\=\\=)\\s*)[a-z,A-Z,äöü,ÄÖÜ]+" //Problem wegen ?<!
 //            },
-//            {
-//                token: "support.function", // Variablen mit < oder > oder == einer Value
-//                regex: "[a-z,A-Z,äöü,ÄÖÜ]+(?=\\s*(\\<|\\>|\\=\\=)\\s*\\d+)" // entfernt das Wort
-//            },
+            {
+                token: "support.function", // Variablen mit < oder > oder == einer Value
+                regex: "[a-z,A-Z,äöü,ÄÖÜ]+(?=\\s*(?:\\<|\\>|\\=\\=)\\s*\\d+)" // entfernt das Wort
+            },
         ]
     };
 };
