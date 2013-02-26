@@ -8,44 +8,155 @@ var MyNewHighlightRules = function() {
 
     // regexp must not have capturing parentheses. Use (?:) instead.
     // regexps are ordered -> the first match is used
+    
    this.$rules = {
         "start" : [
             {
                 token: "support.function", // Variablendeklaration, keine Tabelle
-                regex: "[a-z,A-Z,äöü,ÄÖÜ]+(?!\\s*\\:\\=\\s*table)(?=\\s*\\:\\=\\s*)"
+                regex: "[a-zA-ZöäüÖÄÜ]+(?=\\s*\\:\\=\\s*\\d+)"
             },
-//            {
-//                token: "keyword", // Soundsymbol
-//                regex: "(?<!\\=)\\>" //Problem wegen ?<!
-//            },
-//            {
-//                token: "constant.language", // Geh zu einer Funktion
-//                regex: "\\s*\\=\\>\\s*([a-z,A-Z,äöü,ÄÖÜ]+\\s*)*" //Problem wegen letztem Sternchen
-//            },
-//            {
-//                token: "string", // Beginn einer Funktiondeklaration
-//                regex: "[a-z,A-Z,äöü,ÄÖÜ]+\\s*(?=\\s*\\:\\s*)$" //Wird wegen $ nicht verstanden
-//            },
-//            {
-//                token: "support.function", // Variablen im Text
-//                regex: "(?<=auf|zum|des|dem|den|in|für\\s*)[a-z]+" //Problem wegen ?<!
-//            },
-//            {
-//                token: "support.function", // Variablen im Text
-//                regex: "(?<=\\:\\=\\s*)(?!(true)(false)\\d\\[\\])+[a-z,A-Z,äöü,ÄÖÜ]+" // Problem wegen ?<!
-//            {
-//                token: "support.function", // Variablen mit < oder > oder ==
-//                regex: "[a-z,A-Z,äöü,ÄÖÜ]+\\s*(?=(\\<|\\>|\\=\\=)\\s*[a-z,A-Z,äöü,ÄÖÜ]+)" // entfernt das Wort
-//            },
-//            {
-//                token: "support.function", // Variablen mit < oder > oder ==
-//                regex: "(?<=[a-z,A-Z,äöü,ÄÖÜ]+\\s*(\\<|\\>|\\=\\=)\\s*)[a-z,A-Z,äöü,ÄÖÜ]+" //Problem wegen ?<!
-//            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]+(?!\\s*\\:\\=\\s*\\d+)(?=\\s*\\:\\=\\s*)",
+                next: "variable"
+            },
+            {
+                token: "text",
+                regex: "\\s*\\:",
+                next: "tableUndZeile"
+            },
+            {
+                token: "string", // Anfang einer Funktiondeklaration
+                regex: "^[a-zA-ZöäüÖÄÜ\\s]+\\:\\s*$"
+            },
+            {
+                token: "keyword", //Kontrollesymbole
+                regex: "Oder|Wenn|Ansonsten"
+            },
+            {
+                token: "keyword", //Kontrollesymbole
+                regex: "für jedes\\s*",
+                next: "variableImText"
+            },
+            {
+                token: "keyword", //Goto
+                regex: "^\\s*\\=\\s*\\>",
+                next: "gotofunction"
+            },
+            {
+                token: "comment", // Soundsymbole
+                regex: "\\s*\\>\\s*|\\s*\\*\\s*\\>",
+                next: "sound"
+            },
+            {
+                token: "support.function", // Variablen mit < oder > oder ==
+                regex: "[a-zA-ZöäüÖÄÜ]+\\s*(?=\\<|\\>|\\=\\=|\\>\\=|\\<\\=)",
+                next: "variable"
+            },
             {
                 token: "support.function", // Variablen mit < oder > oder == einer Value
-                regex: "[a-z,A-Z,äöü,ÄÖÜ]+(?=\\s*(?:\\<|\\>|\\=\\=)\\s*\\d+)" // entfernt das Wort
+                regex: "[a-zA-ZöäüÖÄÜ]+(?=\\s*(?:\\<|\\>|\\=\\=|\\>\\=|\\<\\=)\\s*\\d+)"
             },
-        ]
+            {
+                token: "text",
+                regex: "Füge",
+                next: "fuegeeinen"
+            },
+            {
+                token: "text",
+                regex: "(?:Wähle|auf)\\s*",
+                next: "waehle"
+            },
+            {
+                token: "text",
+                regex: "(?:aus|zu|zum|zur|in|jedes|für)\\s+",
+                next: "variableImText"
+            }
+          ],
+           variable: [
+            {
+                token: "text",
+                regex: "$",
+                next: "start"
+            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]"
+            }
+          ],
+          waehle: [
+            {
+                token: "text",
+                regex: "(?:einen|eine|ein|von der)\\s+",
+                next: "variableImText"
+            },
+            {
+                token: "text",
+                regex: "[0-9]+",
+                next: "variableNachZahl"
+            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]+",
+                next: "start"
+            }
+          ],
+          variableImText:[
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]"
+            },
+            {
+                token: "text",
+                regex: "\\s",
+                next: "start"
+            }
+          ],
+          variableNachZahl:[
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]+",
+                next: "start"
+            }
+          ],
+          sound: [
+            {
+                token: "text",
+                regex: "$",
+                next: "start"
+            },
+            {
+                token: "comment",
+                regex: "\\[|\\]|\\(|\\)"
+            },
+            {
+                token: "text",
+                regex: "\\:",
+                next: "variable"
+            }
+          ],
+          gotofunction: [
+            {
+                token: "text",
+                regex: "$",
+                next: "start"
+            },
+            {
+                token: "constant.numeric",
+                regex: ".*"
+            }
+          ],
+          tableUndZeile: [
+            {
+                token: "text",
+                regex: "\\s",
+                next: "start"
+            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]"
+            }
+          ]
     };
 };
 
