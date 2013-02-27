@@ -1,0 +1,42 @@
+    $rx->indent = '^([ ]*)';
+    $rx->identifier = '[a-zA-ZöäüÄÖÜ][öäüÄÖÜa-zA-Z0-9_]*';
+    $rx->index = '[0-9a-zA-ZöäüÄÖÜ][öäüÄÖÜa-zA-Z0-9_]*';
+    $rx->quote = '(?:'.'"'.'|'."'".')';
+    $rx->indexVariable = $rx->identifier.'(?:\['.$rx->quote.'?'.$rx->index.$rx->quote.'?\])?';
+    $rx->memberVariable = $rx->indexVariable.'\.'.$rx->identifier;
+    $rx->variable = '(?:'.$rx->indexVariable.'|'.$rx->memberVariable.')';
+
+    $this->catchables = array(
+      'Comment'=>'/^(\#)(.*)$/',
+      'Game'=>'/^Spiel:\s*(.+)\s*$/',
+      'Sound'=>'/^(>)\s*(.+?)\s*$/',
+      'RandomSound'=>'/^(\*>)\s*(.+?)\s*$/',
+      'Question'=>'/^(\?)\s*(.+?)\s*$/',
+      'Goto'=>'/^=>\s*(.+?)\s*$/',
+      'Condition'=>'/^(Wenn)\s+(.+?)\s*$/i',
+      'OtherwiseCondition'=>'/^(Oder\s+Wenn)\s+(.+?)\s*$/i',
+      'Otherwise'=>'/^(Ansonsten)\s*$/i',
+      'Define'=>'/^(.+?):\s*$/',
+      'Assign'=>'/^('.$rx->variable.')\s*:=\s*(.*?)\s*$/',
+      'AssignSound'=>'/^('.$rx->variable.')\s*:>\s*(.*?)\s*$/',
+      'VarAssign'=>'/^:(.+?)\s*\:?\=\s*(.+?)\s*$/',
+      'Var'=>'/^:(.+?)\s*$/',
+      'For'=>'/^\s*für\s+jedes?n?\s+('.$rx->identifier.')\s+in\s+('.$rx->variable.')\s*$/',
+      
+      // siehe auch gametypetoken
+      'GameType'=>
+        '/^('.
+          'Wähle aus [0-9]+ Fragen zufällig aus'.
+          '|Wähle [0-9]+ aus [0-9]+ Fragen zufällig aus'.
+          '|Wähle von\s*(?:der\s*)?'.$rx->variable.' [0-9]+ (?:Fragen|Zeilen) zufällig aus'.
+        ')\s*\.\s*$/i' // . am Ende
+    );
+      
+    $this->commands = array(
+      // generic commands:
+      'Push'=>'/^Füge \:?('.$rx->variable.') zum?r? ('.$rx->variable.') hinzu\.$/i',
+      'PopAndPush'=>'/^Füge eine?n? ('.$rx->variable.') aus ('.$rx->variable.') zum? ('.$rx->variable.') hinzu\.$/i',
+      'ChooseRandomRow'=>'/^Wähle eine?n? ('.$rx->variable.') aus ('.$rx->variable.') zufällig aus\.$/i',
+      'RepeatLastQuestion'=>'/^Wiederhole die letzte Frage\.$/i',
+      'StartEvaluate'=>'/^Starte? Evaluation für (.*)\.$/i'
+    );
