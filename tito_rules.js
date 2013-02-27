@@ -12,7 +12,7 @@ var MyNewHighlightRules = function() {
     var ifelse = "Oder|Wenn|Ansonsten";
     var soundtype = "\\[|\\]|\\(|\\)";
     var preposition = "(?:aus|zu|zum|zur|in|jedes|für)";
-    var declaration = "\\s*\\:\\=\\s*";
+    var equals = "\\s*\\:\\=\\s*";
     var operator = "\\<|\\>|\\=\\=|\\>\\=|\\<\\=";
 
 
@@ -27,11 +27,11 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "variable", // Variablendeklaration, keine Tabelle
-                regex: identifier+"+(?="+declaration+"\\d+)"
+                regex: identifier+"+(?="+equals+"\\d+)"
             },
             {
                 token: "variable", // Wenn nach := eine variable steht
-                regex: identifier+"+(?!"+declaration+"\\d+)(?="+declaration+")",
+                regex: identifier+"+(?!"+equals+"\\d+)(?="+equals+")",
                 next: "variable"
             },
             {
@@ -173,7 +173,7 @@ var MyNewHighlightRules = function() {
             {
                 token: "variable",
                 regex: identifier+"+"
-            },
+            }
           ],
           sound: [
             {
