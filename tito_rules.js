@@ -12,8 +12,8 @@ var MyNewHighlightRules = function() {
    this.$rules = {
         "start" : [
             {
-                token: "text", // Spieldeklaration bleibt weiss
-                regex: "Spiel:\\s*[a-zA-ZöäüÖÄÜ]+"
+                token: "keyword", // Spieldeklaration bleibt weiss
+                regex: "Spiel:\\s*"
             },
             {
                 token: "support.function", // Variablendeklaration, keine Tabelle
@@ -63,7 +63,7 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "text",
-                regex: "Füge",
+                regex: "^\\s*Füge\\s*",
                 next: "fuegeeinen"
             },
             {
@@ -96,8 +96,25 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "text",
+                regex: "etwas",
+                next: "start"
+            },
+            {
+                token: "text",
                 regex: "[0-9]+\\s*",
                 next: "variableNachZahl"
+            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]+",
+                next: "start"
+            }
+          ],
+          fuegeeinen: [
+            {
+                token: "text",
+                regex: "(?:einen|eine|ein|von der)\\s+",
+                next: "variableImText"
             },
             {
                 token: "support.function",
