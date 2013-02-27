@@ -51,7 +51,7 @@ packRunde:
 
   Wenn auf objekt getippt wurde
   
-    Wenn ob < koffer.length-1
+    Wenn koffer.length-1 > ob 
       > (rightSound)   
       
       ob := ob + 1
@@ -70,7 +70,7 @@ packRunde:
   Ansonsten
     falsch := falsch + 1
   
-    Wenn falsch < versuche
+    Wenn versuche > falsch
       > (wrongSound)
       ob := 0
       objekt := answer[ob]
