@@ -12,11 +12,15 @@ var MyNewHighlightRules = function() {
    this.$rules = {
         "start" : [
             {
+                token: "text", // Spieldeklaration bleibt weiss
+                regex: "Spiel:\\s*[a-zA-ZöäüÖÄÜ]+"
+            },
+            {
                 token: "support.function", // Variablendeklaration, keine Tabelle
                 regex: "[a-zA-ZöäüÖÄÜ]+(?=\\s*\\:\\=\\s*\\d+)"
             },
             {
-                token: "support.function",
+                token: "support.function", // Wenn nach := eine variable steht
                 regex: "[a-zA-ZöäüÖÄÜ]+(?!\\s*\\:\\=\\s*\\d+)(?=\\s*\\:\\=\\s*)",
                 next: "variable"
             },
@@ -34,7 +38,7 @@ var MyNewHighlightRules = function() {
                 regex: "Oder|Wenn|Ansonsten"
             },
             {
-                token: "keyword", //Kontrollesymbole
+                token: "keyword", //"Für jedes"
                 regex: "für jedes\\s*",
                 next: "variableImText"
             },
@@ -50,7 +54,7 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "support.function", // Variablen mit < oder > oder ==
-                regex: "[a-zA-ZöäüÖÄÜ]+\\s*(?=\\<|\\>|\\=\\=|\\>\\=|\\<\\=)",
+                regex: "[a-zA-ZöäüÖÄÜ]+\\s*(?=\\<|\\>|\\=\\=|\\>\\=|\\<\\=\\s*)",
                 next: "variable"
             },
             {
@@ -73,15 +77,15 @@ var MyNewHighlightRules = function() {
                 next: "variableImText"
             }
           ],
-           variable: [
-            {
-                token: "text",
-                regex: "$",
-                next: "start"
-            },
+          variable: [
             {
                 token: "support.function",
-                regex: "[a-zA-ZöäüÖÄÜ]"
+                regex: "\\s*[a-zA-ZöäüÖÄÜ]"
+            },
+            {
+                token: "text",
+                regex: "true|false|\\s|$",
+                next: "start"
             }
           ],
           waehle: [
@@ -92,7 +96,7 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "text",
-                regex: "[0-9]+",
+                regex: "[0-9]+\\s*",
                 next: "variableNachZahl"
             },
             {
@@ -108,16 +112,25 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "text",
+                regex: "\\s*[0-9]+\\s*",
+                next: "variableNachZahl"
+            },
+            {
+                token: "text",
                 regex: "\\s",
                 next: "start"
             }
           ],
           variableNachZahl:[
             {
-                token: "support.function",
-                regex: "[a-zA-ZöäüÖÄÜ]+",
+                token: "text",
+                regex: "\\s|$",
                 next: "start"
-            }
+            },
+            {
+                token: "support.function",
+                regex: "[a-zA-ZöäüÖÄÜ]+"
+            },
           ],
           sound: [
             {
@@ -131,7 +144,7 @@ var MyNewHighlightRules = function() {
             },
             {
                 token: "text",
-                regex: "\\:",
+                regex: "\\s*\\:\\s*",
                 next: "variable"
             }
           ],
@@ -149,7 +162,7 @@ var MyNewHighlightRules = function() {
           tableUndZeile: [
             {
                 token: "text",
-                regex: "\\s",
+                regex: "true|false|$|table",
                 next: "start"
             },
             {
