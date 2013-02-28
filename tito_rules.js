@@ -14,10 +14,20 @@ define("ace/mode/titorules", function(require, exports, module) {
     var equals = "\\s*\\:\\=\\s*";
     var operator = "\\<|\\>|\\=\\=|\\>\\=|\\<\\=";
 
+    var tokenMap = {
+      "variable": "support.function",
+      "functions": "string",
+      "sound": "comment",
+      "gotofunction": "constant.language.boolean",
+      "plaintext": "text",
+      "comment": "constant.numeric",
+      "control": "keyword"
+    };
+
     this.$rules = {
       "start" : [
         {
-          token: "keyword", // Spieldeklaration bleibt weiss
+          token: tokenMap.control,
           regex: "Spiel:\\s*"
         },
         {
@@ -44,7 +54,7 @@ define("ace/mode/titorules", function(require, exports, module) {
           regex: "^.*\\:\\s*$"
         },
         {
-          token: "keyword", //Kontrollesymbole
+          token: tokenMap.control, //Kontrollesymbole
           regex: ifElse
         },
         {
@@ -53,7 +63,7 @@ define("ace/mode/titorules", function(require, exports, module) {
           next: "variableImText"
         },
         {
-          token: "keyword", //Goto
+          token: tokenMap.control, //Goto
           regex: gotoOperator,
           next: "gotoFunction"
         },
@@ -208,15 +218,6 @@ define("ace/mode/titorules", function(require, exports, module) {
           regex: identifier
         }
       ]
-    };
-
-    var tokenMap = {
-      "variable": "support.function",
-      "functions": "string",
-      "sound": "comment",
-      "gotofunction": "constant.language.boolean",
-      "plaintext": "text",
-      "comment": "constant.numeric"
     };
 
     for (var state in this.$rules) {
