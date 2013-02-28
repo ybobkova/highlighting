@@ -31,26 +31,26 @@ define("ace/mode/titorules", function(require, exports, module) {
           regex: "Spiel:\\s*"
         },
         {
-          token: "variable", // Variablendeklaration, keine Tabelle
+          token: tokenMap.variable, // Variablendeklaration, keine Tabelle
           regex: identifier+"+(?="+equals+"\\d+)"
         },
         {
-          token: "variable", // Wenn nach := eine variable steht
+          token: tokenMap.variable, // Wenn nach := eine variable steht
           regex: identifier+"+(?!"+equals+"\\d+)(?="+equals+")",
           next: "variable"
         },
         {
-          token: "comment", // Wenn nach := eine variable steht
+          token: tokenMap.comment, // Wenn nach := eine variable steht
           regex: "\\#",
           next: "comment"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "\\s*\\:",
           next: "declaration"
         },
         {
-          token: "functions", // Anfang einer Funktiondeklaration
+          token: tokenMap.functions, // Anfang einer Funktiondeklaration
           regex: "^.*\\:\\s*$"
         },
         {
@@ -58,7 +58,7 @@ define("ace/mode/titorules", function(require, exports, module) {
           regex: ifElse
         },
         {
-          token: "keyword", //"Für jedes"
+          token: tokenMap.control, //"Für jedes"
           regex: "für jedes\\s*",
           next: "variableImText"
         },
@@ -68,175 +68,157 @@ define("ace/mode/titorules", function(require, exports, module) {
           next: "gotoFunction"
         },
         {
-          token: "sound", // Soundsymbole
+          token: tokenMap.sound, // Soundsymbole
           regex: soundOperator,
           next: "sound"
         },
         {
-          token: "variable", // Variablen mit < oder > oder ==
+          token: tokenMap.variable, // Variablen mit < oder > oder ==
           regex: identifier+"+\\s*(?="+operator+"\\s*)",
           next: "variable"
         },
         {
-          token: "variable", // Variablen mit < oder > oder == einer Value
+          token: tokenMap.variable, // Variablen mit < oder > oder == einer Value
           regex: identifier+"+(?=\\s*(?:"+operator+")\\s*\\d+)"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "^\\s*Füge\\s*",
           next: "fuegeEinen"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "(?:Wähle|auf)\\s*",
           next: "waehle"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: preposition+"\\s+",
           next: "variableImText"
         }
       ],
       variable: [
         {
-          token: "variable",
+          token: tokenMap.variable,
           regex: "\\s*"+identifier
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "true|false|\\s|$",
           next: "start"
         }
       ],
       comment: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "$",
           next: "start"
         },
         {
-          token: "comment",
+          token: tokenMap.comment,
           regex: ".*"
         }
       ],
       waehle: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "(?:einen|eine|ein|von der)\\s+",
           next: "variableImText"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "etwas",
           next: "start"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "[0-9]+\\s*",
           next: "variableNachZahl"
         },
         {
-          token: "variable",
+          token: tokenMap.variable,
           regex: identifier+"+",
           next: "start"
         }
       ],
       fuegeEinen: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "(?:einen|eine|ein|von der)\\s+",
           next: "variableImText"
         },
         {
-          token: "variable",
+          token: tokenMap.variable,
           regex: identifier+"+",
           next: "start"
         }
       ],
       variableImText:[
         {
-          token: "variable",
-          regex: identifier
+          token: tokenMap.variable,
+          regex: identifier+"+"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "\\s*\\d+\\s*",
           next: "variableNachZahl"
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "\\s",
           next: "start"
         }
       ],
       variableNachZahl:[
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "\\s|$",
           next: "start"
         },
         {
-          token: "variable",
+          token: tokenMap.variable,
           regex: identifier+"+"
         }
       ],
       sound: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "$",
           next: "start"
         },
         {
-          token: "sound",
+          token: tokenMap.sound,
           regex: soundType
         },
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "\\s*\\:\\s*",
           next: "variable"
         }
       ],
       gotoFunction: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "$",
           next: "start"
         },
         {
-          token: "gotofunction",
+          token: tokenMap.gotofunction,
           regex: ".*"
         }
       ],
       declaration: [
         {
-          token: "plaintext",
+          token: tokenMap.plaintext,
           regex: "true|false|$|table",
           next: "start"
         },
         {
-          token: "variable",
+          token: tokenMap.variable,
           regex: identifier
         }
       ]
     };
-
-    for (var state in this.$rules) {
-      var stateRules = this.$rules[state];
-      for (var i = stateRules.length; i--; ) {
-        var rule = stateRules[i];
-        if (rule.include || typeof rule == "string") {
-          var args = [i, 1].concat(this.$rules[rule.include || rule]);
-          if (rule.noEscape) {
-            args = args.filter(function(x) {
-              return !x.next;
-            });
-          }
-          stateRules.splice.apply(stateRules, args);
-       } else if (rule.token in tokenMap) {
-         rule.token = tokenMap[rule.token];
-         }
-       }
-    }
   };
 
   oop.inherits(MyNewHighlightRules, TextHighlightRules);
