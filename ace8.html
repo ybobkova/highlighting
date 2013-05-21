@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-<title>ACE1 in Action</title>
-<style type="text/css" media="screen">
+  <title>ACE8 in Action</title>
+  <style type="text/css" media="screen">
     #editor { 
         position: absolute;
         top: 0;
@@ -16,66 +16,37 @@
 <body>
 
 <div id="editor">
-#!tito v0.1
-Spiel: Starquiz
-
-:positiveFeedbackTable = table(sound)
-:negativeFeedbackTable = table(sound)
-:fragen = table(sound, oids)
-richtig := 0
-:zeile
-sterne := [9999023, 9999010, 9999011]
-
-> [start]
-Wähle von der fragen 2 zeilen zufällig aus.
-
-nächste Runde:
-  Wähle eine zeile aus fragen zufällig aus.
-  Wenn round == 5
-    > [lastQuestion]
-  Oder Wenn round == 1
-    > [firstQuestion]
-  Ansonsten
-    > [nextQuestion]
-
-  > :zeile.sound
   
+  Start timer1 mit 10 Sekunden.
+  Start myTimer mit wieviel Sekunden.
+  Stop myTimer.
+  Stop den timer1.
+  
+  Wenn alle Runden abgespielt wurden
   Wenn auf eine oid aus sterne getippt wurde
-    Wenn A.contains(zeile.oids, oid)
-      => richtig getippt
-    Ansonsten 
-      => falsch getippt
-  Ansonsten
-    > [useTheStars]
-    => neuer Versuch
-
-richtig getippt:
-  richtig := richtig + 1
-
-  > (rightSound)
-  > (positiveFeedback)
-
-  => nächste Runde
-
-falsch getippt:
-  > (wrongSound)
-  > (negativeFeedback)
-
-  => nächste Runde
-
-bei Spielende: 
-  Starte Evaluation für richtig.
-
-  Wenn richtig >= 2
-    > [evaluationGood]
-  Oder Wenn richtig >= 1
-    > [evaluationMedium]
-  Ansonsten
-    > [evaluationBad]
-
-
-
-=> nächste Runde
+  Wenn auf einen element aus sterne getippt wurde
+  Wenn auf ein bla aus sterne getippt wurde
+  Wenn richtig == falsch
+  Wenn auf etwas getuppt wurde, was schon gefunden wurde
+  Wenn ob < koffer.length-1
+  Wenn falsch < versuche
+  Wenn zeile.oid == array['wow']
+  Wenn array['wow'] == zeile.oid
+  Wenn richtig <= 4
+  Wenn "spritzen" angetippt wurde
+  Wenn spritzenGefunden
+    => schon gefunden
+  Oder Wenn "schluchzt" angetippt wurde
+  Wenn auf das Wort Lachen angetippt wurde
+  Wenn auf das Bild Efeu getippt wurde
+  Wenn !lastQuestion
+  Wenn innerhalb des timer1s auf eine oid aus commandoids getippt wurde
+  
+  Wähle 1 aus 5 Fragen zufällig aus.
+  Wähle 4 aus 19 Fragen zufällig aus.
+  Wähle aus 2 Fragen zufällig aus.
+  Wähle von der dinge 5 zeilen zufällig aus.
+  Wähle ein ding aus dinge zufällig aus.
 </div>
 
 <script src="ace-0.2.0/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -102,3 +73,4 @@ window.onload = function() {
 </script>
 </body>
 </html>
+

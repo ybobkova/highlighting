@@ -16,7 +16,7 @@
 <body>
 
 <div id="editor">
-#!tito v0.1
+#!tito
 Spiel: Suitcase
 
 :dinge := table(sound,oids)
@@ -24,20 +24,37 @@ Spiel: Suitcase
 :ding
 koffer := []
 runde := 0
-
+wieviel := 1
 richtig := 0
+falsch := 0
 versuche := 2
+ob := 0
 
 > [start]
+
+Wähle von der dinge 5 zeilen zufällig aus.
 
 nächste Runde:
 
   falsch := 0
-  
+    
   Wähle ein ding aus dinge zufällig aus.
-  Füge ding zum Koffer hinzu.
+  Füge ding zum koffer hinzu.
   
+  Wenn wieviel == 1
+    > [oneElement]
+  Oder Wenn wieviel == 2
+    > [twoElements]
+  Oder Wenn wieviel == 3
+    > [threeElements]
+  Oder Wenn wieviel == 4
+    > [fourElements]
+  Oder Wenn wieviel == 5
+    > [fiveElements]
+
+    
   => Spiele alle Sounds des koffer ab
+  ob := 0
   => packRunde
     
 Spiele alle Sounds des koffer ab:
@@ -46,52 +63,49 @@ Spiele alle Sounds des koffer ab:
     > :element.sound
 
 packRunde:
-  
-  ob := 0
-  objekt := koffer[ob]
 
-  Wenn auf objekt getippt wurde
+  objekt := koffer[ob]
   
-    Wenn koffer.length-1 > ob 
+  Wenn auf eine oid aus objekt.oids getippt wurde
+  
+    Wenn ob < koffer.length-1
       > (rightSound)   
       
       ob := ob + 1
-      objekt := answer[ob]
       
-      => neuer Versuch
+      => packRunde
       
     Ansonsten
-    
-      > (tusch)
-      
+      > (rightSound)
+      > "Weiter gehts"
       richtig := richtig + 1
+      wieviel := wieviel + 1
       
       => nächste Runde
   
   Ansonsten
+    
     falsch := falsch + 1
   
-    Wenn versuche > falsch
+    Wenn falsch < versuche
       > (wrongSound)
-      ob := 0
-      objekt := answer[ob]
       > [tryAgain]
-      => neuer Versuch
+      => Spiele alle Sounds des koffer ab
+      ob := 0
+      => packRunde
       
     Ansonsten
-      > [gameOver]
+      > (wrongSound)
       => Spielende
       
 
 bei Spielende: 
   Starte Evaluation für richtig.
   
-  Wenn richtig == 5 || richtig == 4
-    > [evaluationGood]
-  Oder Wenn richtig == 3 || richtig == 2 
-    > [evaluationMedium]
-  Ansonsten
+  Wenn richtig <= 4
     > [evaluationBad]
+  Ansonsten
+    > [evaluationGood]
 
 
 => nächste Runde
