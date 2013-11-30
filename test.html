@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Highlighting for TITO in Action</title>
+  <style type="text/css" media="screen">
+    #editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+</head>
+<body>
+
+<div id="editor">
+#!tito v0.1
+Spiel: Woertersuche
+
+:positiveFeedbackTable = table(sound)
+:fragen = table(sound, oids)
+:zeile
+:wrongAgain = false
+:richtig = 0
+richtig := 0
+spritzenGefunden := true
+sterne := [9999023, 9999010, 9999011]
+reimWort := 2219  
+questionSounds := []
+letters := {}
+letters['A'] := 2270
+answer := [letters['G'], letters['A'], letters['R'], letters['T'], letters['E'], letters['N']]
+searchSound :> [L] "Tippe auf das Wort!" (2-FEE_0629)
+soundB :> [HS] "B (als Laut, nicht Be)" (2-DRA_0693)
+gameButtonSound :> "Spiel-Klang" (110207md1)
+antwortenAnzahl := zeile.oids.length
+insgesamteAntwortenAnzahl := insgesamteAntwortenAnzahl + antwortenAnzahl
+:prozent := insgesamtRichtig / insgesamteAntwortenAnzahl
+objekt := koffer[ob]
+richtig := richtig + 1
+
+> [L] "Hallo, Leseprofi! Lass uns ein Leserätsel machen!" (2-DRA_0723)
+> [start]
+> (lastQuestion)
+> :countSounds.rows[richtig-1].sound
+> [L] "Genau. „Spritzen“ ist ein Tunwort mit Zzz." (2-FEE_0648)
+*> [L] "Leider nicht richtig!" (2-DRA_0735)
+
+Wähle aus 2 Fragen zufällig aus.
+Wähle ein question aus fragenTabelle zufällig aus.
+Wähle eine zeile aus fragen zufällig aus.
+Wähle einen punkt aus punkte zufällig aus.
+Wähle von der fragenTabelle 2 Zeilen zufällig aus.
+Wähle 1 aus 5 Fragen zufällig aus.
+Wähle 4 aus 19 Fragen zufällig aus.
+
+# das macht nur shuffle
+
+Wenn round == 5
+Wenn "spritzen" angetippt wurde
+Wenn auf eine oid aus sterne getippt wurde
+Wenn auf eine oid aus objekt.oids getippt wurde
+Wenn auf einen element aus sterne getippt wurde
+Wenn auf ein bla aus sterne getippt wurde
+Wenn A.contains(zeile.oids, oid)
+Wenn richtig >= 2
+Wenn richtig == 2
+Wenn richtig == falsch
+Wenn alle Runden gespielt wurden
+Wenn auf etwas getippt wurde, was schon gefunden wurde
+Wenn prozent >= 80%
+Oder Wenn prozent >= 40%
+Wenn ob < koffer.length-1
+Wenn falsch < versuche
+Wenn zeile.oid == array['wow']
+Wenn array['wow'] == zeile.oid
+Wenn richtig <= 4
+Wenn spritzenGefunden
+Oder Wenn "schluchzt" angetippt wurde
+Wenn auf das Wort Lachen angetippt wurde
+Wenn auf das Bild Efeu getippt wurde
+Wenn !lastQuestion
+Wenn innerhalb des timer1s auf eine oid aus commandoids getippt wurde
+Wenn auf zeile.oid getippt wurde
+Wenn zeile.oids die oid enthält
+Wenn getippt die oid enthält
+Wenn getippt die oid nicht enthält
+Wenn getippt[i] !== reihe[i]
+
+
+Starte Evaluation für richtig.
+
+für jedes element in koffer
+  > :element.sound
+
+für jede oid in zeile.oids
+  Füge oid zum commandoids hinzu.
+
+für jedes bla in fragen.rows
+
+Füge ding zum koffer hinzu.
+Füge zeile.sound zum zettelMitSounds hinzu.
+Füge klange[randomSound] zum reihe hinzu.
+Füge ein Element aus dinge zum koffer hinzu.
+
+Start timer1 mit 10 Sekunden.
+Start myTimer mit wieviel Sekunden.
+Stop den timer1.
+
+
+onOIDonDifferentPage:
+
+=> Spielende
+</div>
+
+<script src="ace-0.2.0/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace-0.2.0/build/src/theme-vibrant_ink.js" type="text/javascript" charset="utf-8"></script>
+<script src="mode-tito.js" type="text/javascript" charset="utf-8"></script>
+<script src="tito_rules.js" type="text/javascript" charset="utf-8"></script>
+<script>
+window.onload = function() {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/vibrant_ink");
+    var JavaScriptMode = require("ace/mode/tito").Mode;
+    editor.getSession().setMode(new JavaScriptMode());
+};
+/*    
+    var Mode = function(name, desc, extensions) {
+      this.name = name;
+      this.desc = desc;
+      this.mode = "ace/mode/"+name;
+      this.extRe = new RegExp("^.*\\.tito", "gi");
+    };
+*/
+    
+
+</script>
+</body>
+</html>
