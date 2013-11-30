@@ -5,27 +5,27 @@ define("ace/mode/titorules", function(require, exports, module) {
   var TextHighlightRules = require("ace/mode/text_highlight_rules").TextHighlightRules;
 
     var MyNewHighlightRules = function() {
-    var word = "[A-Za-zöäüÖÄÜ\\d]*[A-Za-zöäüÖÄÜ][A-Za-zöäüÖÄÜ\\d]*";
+    var word          = "[A-Za-zöäüÖÄÜ\\d]*[A-Za-zöäüÖÄÜ][A-Za-zöäüÖÄÜ\\d]*";
     var soundOperator = "\\s*\\>\\s*|\\s*\\*\\s*\\>";
-    var gotoOperator = "^\\s*\\=\\s*\\>";
+    var gotoOperator  = "^\\s*\\=\\s*\\>";
     var soundVariable = "\\s*\\:\\s*\\>";
-    var bedingungIf = "(?:Oder Wenn|Wenn)\\s*";
+    var bedingungIf   = "(?:Oder Wenn|Wenn)\\s*";
     var bedingungElse = "Ansonsten\\s*";
-    var timerCommand = "(?:Start|Stop den)\\s+";
-    var soundType = "\\[|\\]|\\((?=[^\\s]+\\)\\s*$)|\\)\\s*$";
-    var preposition = "(?:aus|zu|zum|zur|in|für jede|für jeden|für jedes|für)";
-    var equals = "\\s*\\:\\=\\s*";
-    var operator = "(?:\\<|\\>|\\=\\=|\\>\\=|\\<\\=|\\=\\=\\=|\\!\\=\\=)";
-    var arrayElement = "\\[\\s*.+?\\s*\\]";
+    var timerCommand  = "(?:Start|Stop den)\\s+";
+    var soundType     = "\\[|\\]|\\((?=[^\\s]+\\)\\s*$)|\\)\\s*$";
+    var preposition   = "(?:aus|zu|zum|zur|in|für jede|für jeden|für jedes|für)";
+    var equals        = "\\s*\\:\\=\\s*";
+    var operator      = "(?:\\<|\\>|\\=\\=|\\>\\=|\\<\\=|\\=\\=\\=|\\!\\=\\=|\\!\\=)";
+    var arrayElement  = "\\[\\s*.+?\\s*\\]";
 
     var tokenMap = {
-      "variable": "support.function",
-      "functions": "string",
-      "sound": "comment",
-      "gotofunction": "constant.language.boolean",
-      "plaintext": "text",
-      "comment": "constant.numeric",
-      "control": "keyword"
+      "variable"     : "support.function",
+      "functions"    : "string",
+      "sound"        : "comment",
+      "gotofunction" : "constant.language.boolean",
+      "plaintext"    : "text",
+      "comment"      : "constant.numeric",
+      "control"      : "keyword"
     };
 
     this.$rules = {
@@ -160,12 +160,12 @@ define("ace/mode/titorules", function(require, exports, module) {
         next: "variableNachZahl"
       }, {
         token: tokenMap.plaintext,
-        regex: "\\s",
+        regex: "\\r|\\n|\\t|\\f|$| ",
         next: "start"
       }],
       variableNachZahl: [{
         token: tokenMap.plaintext,
-        regex: "\\s|$",
+        regex: "[\\r\\n\\t\\f ]",
         next: "start"
       }, {
         token: tokenMap.variable,
